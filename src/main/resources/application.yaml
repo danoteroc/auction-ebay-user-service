@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: UserService
+  datasource:
+#    TODO set
+#    Used for UserService relational database in AWS RDS
+    url: jdbc:postgresql://<your-rds-endpoint>:5432/<your-database-name>
+    username: <your-database-username>
+    password: <your-database-password>
+  jpa:
+    hibernate:
+      ddl-auto: update
