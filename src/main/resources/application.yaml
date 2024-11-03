@@ -1,12 +1,39 @@
 spring:
   application:
     name: UserService
-  datasource:
-#    TODO set
-#    Used for UserService relational database in AWS RDS
-    url: jdbc:postgresql://<your-rds-endpoint>:5432/<your-database-name>
-    username: <your-database-username>
-    password: <your-database-password>
   jpa:
     hibernate:
       ddl-auto: update
+server:
+  port: 8081
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: username
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+---
+#TODO remember to enable in the AWS EC2 instance through a command line argument
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://<AWS-POSTGRES-HOST>:<PORT>/<DB_NAME>
+    driverClassName: org.postgresql.Driver
+    username: <YOUR_AWS_DB_USERNAME>
+    password: <YOUR_AWS_DB_PASSWORD>
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none

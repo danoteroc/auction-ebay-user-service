@@ -1,39 +1,43 @@
 package org.topicsswe.userservice.application.controller;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.topicsswe.userservice.application.DTO.UserDTO;
 import org.topicsswe.userservice.application.transformers.UserTransformer;
-import org.topicsswe.userservice.domain.objects.User;
+import org.topicsswe.userservice.domain.objects.SiteUser;
 import org.topicsswe.userservice.domain.service.UserService;
-import org.topicsswe.userservice.infrastructure.UserRepository;
-
-import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
 public class UserController {
 
-    private UserRepository userRepository;
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
 
     @PostMapping("/user")
-    public void addUser(@RequestBody UserDTO userDto) {
-        User user = UserTransformer.userDTOtoUser(userDto);
-        userRepository.saveAndFlush(user);
-//        TODO check that the user is not registered
+    public SiteUser addUser(@RequestBody UserDTO userDto) {
+        if (!userService.userAlreadyExists(userDto.email())) {
+            var user = UserTransformer.userDTOtoUser(userDto);
+            return userService.addUserToDatabase(user);
+        }
+        return null;
     }
 
     @PostMapping("info/{id}")
-    public void updateUserInfo(@RequestBody User user) {
-//        TODO check that the user exists
-        userRepository.save(user);
+    public void updateUserInfo(@RequestBody SiteUser siteUser) {
+        if (userService.userAlreadyExists(siteUser.getEmail())) {
+            userService.addUserToDatabase(siteUser);
+        }
     }
 
     @GetMapping("user/{id}")
-    public User getUser(@PathVariable String id) {
+    public SiteUser getUser(@PathVariable String id) {
+        log.info("CALLED get user");
         //TODO check
-        return userService.getUser(id);
-
+        var user = userService.getUser(id);
+        log.info("User is " + user);
+        return user;
     }
 }

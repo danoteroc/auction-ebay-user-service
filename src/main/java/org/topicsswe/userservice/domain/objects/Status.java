@@ -1,6 +1,7 @@
 package org.topicsswe.userservice.domain.objects;
 
-public enum Role {
+public enum Status {
     ADMIN,
-    STANDARD
+    STANDARD_ACTIVE,
+    BLOCKED
 }

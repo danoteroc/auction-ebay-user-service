@@ -12,14 +12,15 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "SiteUser")
-public class User {
+public class SiteUser {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String name;
-    private Role role;
-    private Date registrationDate;
-    private boolean isBlocked = false;
+    private String username;
     private String email;
+    private String passwordHash;
+    private String name;
+    private Status status;
+    private Date registrationDate;
+    private boolean isBlocked;
 }
