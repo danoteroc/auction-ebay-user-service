@@ -6,6 +6,9 @@ spring:
       ddl-auto: update
 server:
   port: 8081
+cognito:
+  clientId: ${AWS_COGNITO_CLIENT_ID}
+  userPool: ${AWS_COGNITO_USERPOOL}
 
 ---
 spring:

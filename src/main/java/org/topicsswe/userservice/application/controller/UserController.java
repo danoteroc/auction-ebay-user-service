@@ -32,12 +32,17 @@ public class UserController {
         }
     }
 
-    @GetMapping("user/{id}")
-    public SiteUser getUser(@PathVariable String id) {
+    @GetMapping("user/{username}")
+    public SiteUser getUser(@PathVariable String username) {
         log.info("CALLED get user");
         //TODO check
-        var user = userService.getUser(id);
+        var user = userService.getUser(username);
         log.info("User is " + user);
         return user;
+    }
+
+    @GetMapping("user/me")
+    public SiteUser getCurrentUser() {
+        return null;
     }
 }
