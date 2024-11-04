@@ -4,11 +4,19 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  security:
+    oauth2:
+      client:
+        provider:
+          cognito:
+            issuer-uri: https://cognito-idp.us-east-2.amazonaws.com/${AWS_COGNITO_USERPOOL}
 server:
   port: 8081
 cognito:
   clientId: ${AWS_COGNITO_CLIENT_ID}
   userPool: ${AWS_COGNITO_USERPOOL}
+  tokenSigningKey: ${AWS_COGNITO_TOKEN_SIGNING_KEY}
+
 
 ---
 spring:

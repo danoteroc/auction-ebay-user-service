@@ -5,15 +5,10 @@ import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeDataType;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.SignUpRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.SignUpResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 // https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/java_cognito-identity-provider_code_examples.html
 @Component
@@ -23,7 +18,7 @@ public class CognitoClient {
     @Value("${cognito.clientId}")
     private String clientId;
     @Value("${cognito.userPool}")
-    private String userPool; // TODO add in .yaml
+    private String userPool;
 
     public CognitoClient() {
         this.cognitoClient = CognitoIdentityProviderClient.builder()
@@ -36,25 +31,32 @@ public class CognitoClient {
         return null; //TODO complete
     }
 
+    /**
+     * Register a new user
+     * @param username username
+     * @param password password
+     * @param name name of the user
+     * @return user sub
+     */
     public String registerUser(String username, String password, String name) {
 
         long unixTimestamp = System.currentTimeMillis() / 1000L;
 
         List<AttributeType> at = List.of(
-//                Updated_at
+                // Updated_at
                 AttributeType.builder()
                         .name("updated_at")
                         .value(Long.toString(unixTimestamp))
                         .build(),
-//        name
+                // name
                 AttributeType.builder()
                         .name("name")
                         .value(name)
                         .build(),
-//                role
+                // role
                 AttributeType.builder()
                         .name("custom:role")
-                        .value("STANDARD")
+                        .value("STANDARD") //TODO switch
                         .build()
         );
 
@@ -66,5 +68,29 @@ public class CognitoClient {
                 .build();
         SignUpResponse response = cognitoClient.signUp(request);
         return response.userSub();
+    }
+
+    /**
+     * Logs in a user
+     * @param username username
+     * @param password password
+     * @return access token //TODO add id token to response
+     */
+    public String loginUser(String username, String password) {
+        var request = InitiateAuthRequest.builder()
+                .clientId(clientId)
+                .authFlow("USER_PASSWORD_AUTH")
+                .authParameters(
+                    Map.of(
+                        "USERNAME", username,
+                        "PASSWORD", password
+                    )
+                )
+                .build();
+
+        InitiateAuthResponse response = cognitoClient.initiateAuth(request);
+//        return response.authenticationResult().accessToken();
+        return response.authenticationResult().idToken();
+
     }
 }

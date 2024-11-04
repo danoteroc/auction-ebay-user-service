@@ -14,4 +14,8 @@ public class UserCognitoService {
     public String register(SiteUser user) {
         return cognitoClient.registerUser(user.getUsername(), user.getPasswordHash(), user.getName());
     }
+
+    public String login(String username, String password) {
+        return cognitoClient.loginUser(username, password);
+    }
 }
