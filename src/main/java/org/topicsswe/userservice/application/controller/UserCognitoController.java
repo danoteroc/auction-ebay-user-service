@@ -2,10 +2,7 @@ package org.topicsswe.userservice.application.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.topicsswe.userservice.application.DTO.LoginDTO;
 import org.topicsswe.userservice.application.DTO.UserDTO;
 import org.topicsswe.userservice.application.transformers.UserTransformer;
@@ -36,5 +33,15 @@ public class UserCognitoController {
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String testAdmin() {
         return "Testing login from Admin";
+    }
+
+    @PostMapping("/admin/privileges/{username}")
+    public String addPrivilegesToUser(@PathVariable String username) {
+        return userService.addPrivileges(username);
+    }
+
+    @PostMapping("/admin/suspend/{username}")
+    public String suspendUser(@PathVariable String username) {
+        return userService.suspendUser(username);
     }
 }

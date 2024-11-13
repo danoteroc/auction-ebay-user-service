@@ -12,10 +12,25 @@ public class UserCognitoService {
     private final CognitoClient cognitoClient;
 
     public String register(SiteUser user) {
-        return cognitoClient.registerUser(user.getUsername(), user.getPasswordHash(), user.getName());
+        var ans =  cognitoClient.registerUser(user.getUsername(), user.getPasswordHash(), user.getName());
+        cognitoClient.confirmSignUp(user.getUsername());
+        return ans;
     }
 
     public String login(String username, String password) {
         return cognitoClient.loginUser(username, password);
+    }
+
+    public String getUserInfo() {
+//        cognitoClient.getCurrentUserInfo();
+        return null;
+    }
+
+    public String addPrivileges(String username) {
+        return cognitoClient.addPrivileges(username);
+    }
+
+    public String suspendUser(String username) {
+        return cognitoClient.suspendUser(username);
     }
 }

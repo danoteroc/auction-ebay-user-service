@@ -27,10 +27,6 @@ public class CognitoClient {
                 .build();
     }
 
-    public String authenticateUser(String username, String password) {
-        return null; //TODO complete
-    }
-
     /**
      * Register a new user
      * @param username username
@@ -70,6 +66,14 @@ public class CognitoClient {
         return response.userSub();
     }
 
+    public void confirmSignUp(String username) {
+        var request = AdminConfirmSignUpRequest.builder()
+                .username(username)
+                .userPoolId(userPool)
+                .build();
+        cognitoClient.adminConfirmSignUp(request);
+    }
+
     /**
      * Logs in a user
      * @param username username
@@ -89,8 +93,33 @@ public class CognitoClient {
                 .build();
 
         InitiateAuthResponse response = cognitoClient.initiateAuth(request);
-//        return response.authenticationResult().accessToken();
-        return response.authenticationResult().idToken();
+        return response.authenticationResult().accessToken();
+//        return response.authenticationResult().idToken();
+    }
 
+    public void getCurrentUserInfo(String accessToken) {
+        var request = GetUserRequest.builder()
+                .accessToken(accessToken)
+                .build();
+        var response = cognitoClient.getUser(request);
+    }
+
+    public String addPrivileges(String username) {
+        var request = AdminAddUserToGroupRequest.builder()
+                .username(username)
+                .groupName("admin")
+                .userPoolId(userPool)
+                .build();
+        var response = cognitoClient.adminAddUserToGroup(request);
+        return response.toString();
+    }
+
+    public String suspendUser(String username) {
+        var request = AdminDisableUserRequest.builder()
+                .username(username)
+                .userPoolId(userPool)
+                .build();
+        var response = cognitoClient.adminDisableUser(request);
+        return response.toString();
     }
 }

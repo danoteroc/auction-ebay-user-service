@@ -31,12 +31,14 @@ public class SecurityConfig  {
 //                .cors(cors -> cors.) //TODO enable cors?
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/token", "/register").permitAll()
-
-                        .requestMatchers("/admin/**")
-                        .hasRole("ADMIN")
-
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/login", "/register").permitAll()
+//
+//                        // TODO check if we need this or if we could just add a database like userId - Role
+//                        .requestMatchers("/admin/**")
+//                        .hasRole("ADMIN")
+//
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
 
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
