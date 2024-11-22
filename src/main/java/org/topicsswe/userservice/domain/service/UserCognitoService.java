@@ -2,8 +2,10 @@ package org.topicsswe.userservice.domain.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.topicsswe.userservice.domain.objects.LoginResponse;
 import org.topicsswe.userservice.domain.objects.SiteUser;
 import org.topicsswe.userservice.infrastructure.cognito.CognitoClient;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.GetUserResponse;
 
 @Service
 @AllArgsConstructor
@@ -17,13 +19,19 @@ public class UserCognitoService {
         return ans;
     }
 
-    public String login(String username, String password) {
+    public LoginResponse login(String username, String password) {
         return cognitoClient.loginUser(username, password);
     }
 
-    public String getUserInfo() {
-//        cognitoClient.getCurrentUserInfo();
-        return null;
+    public SiteUser getUserInfo(String jwt) {
+        GetUserResponse response =  cognitoClient.getCurrentUserInfo(jwt);
+        SiteUser user = new SiteUser();
+        user.setUsername(response.getValueForField("Username", String.class).orElseThrow(() ->
+                new RuntimeException("User registered without username. This should not be happening")));
+        response.getValueForField("name", String.class).ifPresent(user::setName);
+        response.getValueForField("email", String.class).ifPresent(user::setEmail);
+
+        return user;
     }
 
     public String addPrivileges(String username) {

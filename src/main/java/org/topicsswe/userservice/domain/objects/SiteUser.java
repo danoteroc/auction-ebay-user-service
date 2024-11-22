@@ -2,6 +2,7 @@ package org.topicsswe.userservice.domain.objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class SiteUser {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -23,4 +25,6 @@ public class SiteUser {
     private Status status;
     private Date registrationDate;
     private boolean isBlocked;
+
+
 }
