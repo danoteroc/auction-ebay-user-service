@@ -2,7 +2,7 @@ package org.topicsswe.userservice.infrastructure.cognito;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import org.topicsswe.userservice.domain.objects.LoginResponse;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
@@ -23,7 +23,6 @@ public class CognitoClient {
     public CognitoClient() {
         this.cognitoClient = CognitoIdentityProviderClient.builder()
                 .region(Region.US_EAST_2)
-                .credentialsProvider(ProfileCredentialsProvider.create()) //TODO check this portion
                 .build();
     }
 
@@ -80,7 +79,7 @@ public class CognitoClient {
      * @param password password
      * @return access token //TODO add id token to response
      */
-    public String loginUser(String username, String password) {
+    public LoginResponse loginUser(String username, String password) {
         var request = InitiateAuthRequest.builder()
                 .clientId(clientId)
                 .authFlow("USER_PASSWORD_AUTH")
@@ -93,15 +92,18 @@ public class CognitoClient {
                 .build();
 
         InitiateAuthResponse response = cognitoClient.initiateAuth(request);
-        return response.authenticationResult().accessToken();
-//        return response.authenticationResult().idToken();
+        return new LoginResponse(
+                response.authenticationResult().idToken(),
+                response.authenticationResult().accessToken(),
+                response.authenticationResult().refreshToken()
+        );
     }
 
-    public void getCurrentUserInfo(String accessToken) {
+    public GetUserResponse getCurrentUserInfo(String accessToken) {
         var request = GetUserRequest.builder()
                 .accessToken(accessToken)
                 .build();
-        var response = cognitoClient.getUser(request);
+        return cognitoClient.getUser(request);
     }
 
     public String addPrivileges(String username) {
