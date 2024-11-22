@@ -1,0 +1,10 @@
+services:
+  user-service:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - AWS_COGNITO_CLIENT_ID=4jjvmg5rpj9aodga6huqvojg90
+      - AWS_COGNITO_TOKEN_SIGNING_KEY=https://cognito-idp.us-east-2.amazonaws.com/us-east-2_0WAJe0Yae/.well-known/jwks.json
+      - AWS_COGNITO_USERPOOL=us-east-2_0WAJe0Yae
+    container_name: auction-user-service
