@@ -11,7 +11,7 @@ spring:
           cognito:
             issuer-uri: https://cognito-idp.us-east-2.amazonaws.com/${AWS_COGNITO_USERPOOL}
 server:
-  port: 8081
+  port: 8080
 cognito:
   clientId: ${AWS_COGNITO_CLIENT_ID}
   userPool: ${AWS_COGNITO_USERPOOL}
