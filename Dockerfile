@@ -7,12 +7,14 @@ WORKDIR /app
 COPY pom.xml ./
 COPY src ./src
 
+
 RUN mvn clean package -DskipTests
 
 # Use Java image instead of maven image
 FROM eclipse-temurin:21
 WORKDIR /app
 COPY --from=build /app/target/*.jar application.jar
+COPY ".env" .
 
 EXPOSE 8080
 

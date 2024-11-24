@@ -17,6 +17,21 @@ cognito:
   userPool: ${AWS_COGNITO_USERPOOL}
   tokenSigningKey: ${AWS_COGNITO_TOKEN_SIGNING_KEY}
 
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
 
 ---
 spring:
@@ -24,13 +39,28 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/testdb
-    username: username
-    password: password
+    url: jdbc:postgresql://localhost:5432/usersdb
+    username: postgres
+    password: postgres
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create-drop
+    show-sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:postgresql://postgresql-db:5432/usersdb
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
     show-sql: true
 
 ---
