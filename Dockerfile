@@ -18,4 +18,4 @@ COPY ".env" .
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "application.jar"]

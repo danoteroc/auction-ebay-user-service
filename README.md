@@ -1,14 +1,24 @@
 # Auction-Ebay User Management Service
 User service for the auction ebay (topics in SWE) project.
 
-The application has environment variables set for retrieving the cognito pool as follows:
+The application has environment variables set for retrieving the cognito pool. 
+
+This variables have to be set in the file ".env":
 
 ```
 AWS_COGNITO_CLIENT_ID=xxx
 AWS_COGNITO_TOKEN_SIGNING_KEY=yyy
 ```
-**note**: these are meant to be set inside the container
-After setting the environment variables, run the application using the 
+
+### Run using docker
+```
+docker build -t user-service:latest .
+docker run -p 8080:8080 user-service:latest
+```
+
+### Run locally
+
+Run the application using the 
 [maven wrapper](https://www.baeldung.com/maven-wrapper):
 
 ```
