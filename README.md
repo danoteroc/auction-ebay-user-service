@@ -7,7 +7,7 @@ This variables have to be set in the file ".env":
 
 ```
 AWS_COGNITO_CLIENT_ID=xxx
-AWS_COGNITO_TOKEN_SIGNING_KEY=yyy
+AWS_COGNITO_USERPOOL=yyy
 ```
 
 ### Run using docker
