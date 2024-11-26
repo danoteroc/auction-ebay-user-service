@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.topicsswe.userservice.domain.exceptions.NoEmailFoundException;
 import org.topicsswe.userservice.domain.exceptions.NoUserFoundException;
 
 import java.util.HashMap;
@@ -28,6 +29,14 @@ public class ExceptionHandlerController {
     public ResponseEntity<Object> handleNoUserFound(NoUserFoundException ex) {
         //TODO change not found for ...
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    }
+
+    @ExceptionHandler(NoEmailFoundException.class)
+    public ResponseEntity<Object> handleNoEmailFoundException(NoEmailFoundException ex) {
+        log.error(ex.toString());
+        return ResponseEntity
+                .internalServerError()
+                .body("The email with the ID " + ex.getId() + " was not found in the database");
     }
 
 }
