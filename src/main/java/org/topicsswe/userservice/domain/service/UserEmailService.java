@@ -32,8 +32,14 @@ public class UserEmailService {
         if (optionalEmail.isEmpty())
             throw new NoEmailFoundException(emailId);
 
+
         // Update UserEmailRepository
         var email = optionalEmail.get();
+
+        // Check that there is no reply
+        if (email.isReplied())
+            return; // Nothing done because there is a reply already //TODO check if we should throw exception
+
         email.setReplied(true);
 
         // Add to UserEmailReplyRepository

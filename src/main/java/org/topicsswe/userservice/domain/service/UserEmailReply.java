@@ -21,7 +21,8 @@ public class UserEmailReply {
     private String fromAdminUsername;
     private Date timestamp;
     private String message;
-    @OneToOne(mappedBy = "id")
+    @OneToOne()
+    @JoinColumn(name = "emailRepliedId", referencedColumnName = "id")
     private UserEmail repliedToEmail;
 
     public UserEmailReply(String toUsername, String fromAdminUsername,
