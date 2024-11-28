@@ -3,6 +3,7 @@ package org.topicsswe.userservice.infrastructure.cognito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.topicsswe.userservice.domain.objects.LoginResponse;
+import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
@@ -22,6 +23,7 @@ public class CognitoClient {
 
     public CognitoClient() {
         this.cognitoClient = CognitoIdentityProviderClient.builder()
+                .credentialsProvider(ProfileCredentialsProvider.create("auction-project"))
                 .region(Region.US_EAST_2)
                 .build();
     }
