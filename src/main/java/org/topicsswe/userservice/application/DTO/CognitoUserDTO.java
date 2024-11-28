@@ -6,32 +6,25 @@ import org.topicsswe.userservice.domain.objects.Status;
 import java.time.Instant;
 import java.util.Date;
 
-public record UserDTO(
+public record CognitoUserDTO(
         String status,
         String name,
-        String email,
-        String username,
-        String password
+        String email
 ) {
     public SiteUser toUser() {
         SiteUser user = new SiteUser();
-        user.setUsername(username);
-        user.setPasswordHash(password);
         user.setName(name);
         user.setStatus(Status.valueOf(status));
         user.setEmail(email);
-        user.setRegistrationDate(Date.from(Instant.now()));
 
         return user;
     }
 
-    public static UserDTO toUserDTO(SiteUser user) {
-        return new UserDTO(
+    public static CognitoUserDTO toUserDTO(SiteUser user) {
+        return new CognitoUserDTO(
                 "",
                 user.getName(),
-                user.getEmail(),
-                user.getUsername(),
-                ""
+                user.getEmail()
                 );
     }
 }

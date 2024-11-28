@@ -15,16 +15,30 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SiteUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String username;
+    private String cognitoUserId;
     private String email;
-    @JsonIgnore
-    private String passwordHash;
     private String name;
-    private Status status;
-    private Date registrationDate;
+    private String address;
+    private String telephoneNumber;
+    @JsonIgnore
     private boolean isBlocked;
+    @Enumerated(value = EnumType.STRING)
+    @JsonIgnore
+    private Status status;
 
+    public SiteUser(String cognitoUserId, String email, String name, String address, String telephoneNumber) {
+        this.cognitoUserId = cognitoUserId;
+        this.email = email;
+        this.name = name;
+        this.address = address;
+        this.telephoneNumber = telephoneNumber;
+        this.isBlocked = false;
+        this.status = Status.STANDARD_ACTIVE;
+    }
 
+    public SiteUser(String cognitoUserId) {
+        this.cognitoUserId = cognitoUserId;
+        this.isBlocked = false;
+        this.status = Status.STANDARD_ACTIVE;
+    }
 }

@@ -2,9 +2,6 @@ package org.topicsswe.userservice.application.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.topicsswe.userservice.application.DTO.LoginDTO;
-import org.topicsswe.userservice.application.DTO.UserDTO;
-import org.topicsswe.userservice.domain.objects.LoginResponse;
 import org.topicsswe.userservice.domain.service.UserCognitoService;
 
 @RestController
@@ -13,15 +10,15 @@ public class UserCognitoController {
 
     public UserCognitoService userService;
 
-    @PostMapping("/register")
-    public String register(@RequestBody UserDTO user) {
-        return userService.register(user.toUser());
-    }
+//    @PostMapping("/register")
+//    public String register(@RequestBody CognitoUserDTO user) {
+//        return userService.register(user.toUser());
+//    }
 
-    @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginDTO dto) {
-        return userService.login(dto.username(), dto.password());
-    }
+//    @PostMapping("/login")
+//    public LoginResponse login(@RequestBody LoginDTO dto) {
+//        return userService.login(dto.username(), dto.password());
+//    }
 
     @PutMapping("/admin/privileges/{username}")
     public String addPrivilegesToUser(@PathVariable String username) {
@@ -33,8 +30,8 @@ public class UserCognitoController {
         return userService.suspendUser(username);
     }
 
-    @GetMapping("/user/")
-    public UserDTO getUserInformation(@RequestParam String accessToken) {
-        return UserDTO.toUserDTO(userService.getUserInfo(accessToken));
-    }
+//    @GetMapping("/user/cognito")
+//    public CognitoUserDTO getUserInformation(@RequestParam String accessToken) {
+//        return CognitoUserDTO.toUserDTO(userService.getUserInfo(accessToken));
+//    }
 }

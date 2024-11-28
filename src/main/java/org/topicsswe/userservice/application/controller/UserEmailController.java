@@ -12,13 +12,13 @@ import org.topicsswe.userservice.domain.service.UserEmailService;
 
 import java.util.List;
 
-@RestController
+@RestController("/emails")
 @AllArgsConstructor
 public class UserEmailController {
 
     public final UserEmailService service;
 
-    @PostMapping("/emails/sendMessage")
+    @PostMapping("/sendMessage")
     public void sendMessage(@RequestBody UserEmailDTO message) {
         service.sendMessageToAdmin(message.toUserEmail());
     }

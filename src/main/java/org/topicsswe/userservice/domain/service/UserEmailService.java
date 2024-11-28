@@ -16,7 +16,7 @@ public class UserEmailService {
     public final UserEmailRepository repository;
     public final UserEmailReplyRepository replyRepository;
 
-//    TODO call notification service API to send email?
+
 
     public void sendMessageToAdmin(UserEmail email) {
         repository.save(email);
@@ -27,6 +27,9 @@ public class UserEmailService {
     }
 
     public void replyTo(long emailId, String fromAdminUsername, String message) {
+
+        //    TODO call notification service API to send email?
+
         // Find email in UserEmailRepository
         var optionalEmail = repository.findById(emailId);
         if (optionalEmail.isEmpty())
