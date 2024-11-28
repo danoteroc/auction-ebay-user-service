@@ -1,8 +1,10 @@
 package org.topicsswe.userservice.domain.service;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.topicsswe.userservice.domain.objects.SiteUser;
+import org.topicsswe.userservice.domain.objects.Status;
 import org.topicsswe.userservice.infrastructure.SiteUserRepository;
 
 import java.util.List;
@@ -37,5 +39,28 @@ public class SiteUserService {
 
     public List<SiteUser> getAllInfo() {
         return repository.findAll();
+    }
+
+    @PostConstruct
+    public void updateTableWithExistingCustomers() {
+        //TODO
+    }
+
+    public void suspendUser(String userId) {
+        var user = repository.findByCognitoUserId(userId).orElseThrow(
+                () -> new RuntimeException("No user found for suspending")
+        );
+
+        user.setStatus(Status.BLOCKED);
+        repository.save(user);
+    }
+
+    public void grantPrivileges(String username) {
+        var user = repository.findByCognitoUserId(username).orElseThrow(
+                () -> new RuntimeException("No user found for granting privileges")
+        );
+
+        user.setAdmin(true);
+        repository.save(user);
     }
 }

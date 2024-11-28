@@ -2,13 +2,15 @@ package org.topicsswe.userservice.application.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.topicsswe.userservice.domain.service.SiteUserService;
 import org.topicsswe.userservice.domain.service.UserCognitoService;
 
 @RestController
 @AllArgsConstructor
 public class UserCognitoController {
 
-    public UserCognitoService userService;
+    public final UserCognitoService cognitoService;
+    public final SiteUserService userManagementService;
 
 //    @PostMapping("/register")
 //    public String register(@RequestBody CognitoUserDTO user) {
@@ -22,12 +24,14 @@ public class UserCognitoController {
 
     @PutMapping("/admin/privileges/{username}")
     public String addPrivilegesToUser(@PathVariable String username) {
-        return userService.addPrivileges(username);
+        userManagementService.grantPrivileges(username);
+        return cognitoService.addPrivileges(username);
     }
 
-    @PutMapping("/admin/suspend/{username}")
-    public String suspendUser(@PathVariable String username) {
-        return userService.suspendUser(username);
+    @PutMapping("/admin/suspend/{userId}")
+    public String suspendUser(@PathVariable String userId) {
+        userManagementService.suspendUser(userId);
+        return cognitoService.suspendUser(userId);
     }
 
 //    @GetMapping("/user/cognito")

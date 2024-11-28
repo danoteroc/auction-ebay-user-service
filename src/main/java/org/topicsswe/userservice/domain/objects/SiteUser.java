@@ -25,6 +25,7 @@ public class SiteUser {
     @Enumerated(value = EnumType.STRING)
     @JsonIgnore
     private Status status;
+    private boolean isAdmin;
 
     public SiteUser(String cognitoUserId, String email, String name, String address, String telephoneNumber) {
         this.cognitoUserId = cognitoUserId;
@@ -34,11 +35,13 @@ public class SiteUser {
         this.telephoneNumber = telephoneNumber;
         this.isBlocked = false;
         this.status = Status.STANDARD_ACTIVE;
+        this.isAdmin = false;
     }
 
     public SiteUser(String cognitoUserId) {
         this.cognitoUserId = cognitoUserId;
         this.isBlocked = false;
         this.status = Status.STANDARD_ACTIVE;
+        this.isAdmin = false;
     }
 }
