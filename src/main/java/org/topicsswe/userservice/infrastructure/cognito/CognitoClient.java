@@ -86,10 +86,10 @@ public class CognitoClient {
                 .clientId(clientId)
                 .authFlow("USER_PASSWORD_AUTH")
                 .authParameters(
-                    Map.of(
-                        "USERNAME", username,
-                        "PASSWORD", password
-                    )
+                        Map.of(
+                                "USERNAME", username,
+                                "PASSWORD", password
+                        )
                 )
                 .build();
 
@@ -125,5 +125,13 @@ public class CognitoClient {
                 .build();
         var response = cognitoClient.adminDisableUser(request);
         return response.toString();
+    }
+
+    public List<UserType> getAllUsersInCognito() {
+        var request = ListUsersRequest.builder()
+                .userPoolId(userPool)
+                .build();
+        var response = cognitoClient.listUsers(request);
+        return response.users();
     }
 }

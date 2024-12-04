@@ -44,4 +44,11 @@ public class SiteUser {
         this.status = Status.STANDARD_ACTIVE;
         this.isAdmin = false;
     }
+
+    public SiteUser(String cognitoUserId, String email, boolean isAdmin, String status) {
+        this.cognitoUserId = cognitoUserId;
+        this.email = email;
+        this.isAdmin = isAdmin;
+        this.status = Status.valueOf(status);
+    }
 }
