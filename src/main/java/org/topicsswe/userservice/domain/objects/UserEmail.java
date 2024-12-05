@@ -17,13 +17,13 @@ public class UserEmail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
-    private String from;
+    private String fromEmail;
     private Date timestamp;
     private String message;
     private boolean replied;
 
-    public UserEmail(String from, String message) {
-        this.from = from;
+    public UserEmail(String fromEmail, String message) {
+        this.fromEmail = fromEmail;
         this.timestamp = Date.from(Instant.now());
         this.message = message;
         this.replied = false;

@@ -12,7 +12,7 @@ import org.topicsswe.userservice.domain.service.UserEmailService;
 
 import java.util.List;
 
-@RestController("/emails")
+@RestController
 @AllArgsConstructor
 public class UserEmailController {
 

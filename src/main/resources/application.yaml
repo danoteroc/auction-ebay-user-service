@@ -32,6 +32,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+notification-service-url: http://localhost:8080
 
 ---
 spring:
@@ -47,6 +48,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+notification-service-url: http://localhost:4001
 
 ---
 spring:
@@ -62,6 +64,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+notification-service-url: http://api-gateway:42069/api/notifications/
 
 ---
 #TODO remember to enable in the AWS EC2 instance through a command line argument

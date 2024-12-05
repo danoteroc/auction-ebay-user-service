@@ -1,5 +1,6 @@
 package org.topicsswe.userservice.domain.email;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -10,13 +11,16 @@ import java.util.List;
 @Configuration
 public class SendEmailConsumerConfigurator {
 
+    @Value("${notification-service-url}")
+    private String notificationsServiceUrl;
     private final RestTemplate restTemplate;
 
     public SendEmailConsumerConfigurator() {
+        this.notificationsServiceUrl = notificationsServiceUrl;
         restTemplate = new RestTemplate();
     }
 
-    @Profile("{local | dev}")
+    @Profile("local")
     @Bean
     public SendEmailConsumer sendMockEmailConsumer() {
         return (destinationEmail, subject, message) -> {
@@ -24,11 +28,11 @@ public class SendEmailConsumerConfigurator {
         };
     }
 
-    @Profile("{docker}")
+    @Profile("dev | docker")
     @Bean
     public SendEmailConsumer sendDockerEmailConsumer() {
         return (destinationEmail, subject, message) -> restTemplate.postForEntity(
-                "api-gateway:42069/api/notifications/sendEmail", //TODO fill with correct URI
+                notificationsServiceUrl + "/sendEmail",
                 new SendEmail(
                         List.of(destinationEmail),
                         subject,

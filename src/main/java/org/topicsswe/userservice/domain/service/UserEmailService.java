@@ -44,11 +44,11 @@ public class UserEmailService {
         email.setReplied(true);
 
         // Add to UserEmailReplyRepository
-        var reply = new UserEmailReply(email.getFrom(), fromAdminUsername, message, email);
+        var reply = new UserEmailReply(email.getFromEmail(), fromAdminUsername, message, email);
         replyRepository.save(reply);
 
         emailConsumer.sendEmail(
-                email.getFrom(),
+                email.getFromEmail(),
                 "Reply to message from admin " + fromAdminUsername,
                 message);
     }
