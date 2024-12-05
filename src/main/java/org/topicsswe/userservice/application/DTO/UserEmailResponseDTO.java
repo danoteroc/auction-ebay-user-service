@@ -8,7 +8,7 @@ public record UserEmailResponseDTO(long id, String fromUsername, Date timestamp,
 
     public static UserEmailResponseDTO toUserEmailResponseDTO(UserEmail email) {
         return new UserEmailResponseDTO(email.getId(),
-                email.getFromUsername(),
+                email.getFrom(),
                 email.getTimestamp(),
                 email.getMessage());
     }

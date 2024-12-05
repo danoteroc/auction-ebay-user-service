@@ -2,8 +2,10 @@ package org.topicsswe.userservice.domain.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.topicsswe.userservice.domain.email.SendEmailConsumer;
 import org.topicsswe.userservice.domain.exceptions.NoEmailFoundException;
 import org.topicsswe.userservice.domain.objects.UserEmail;
+import org.topicsswe.userservice.domain.objects.UserEmailReply;
 import org.topicsswe.userservice.infrastructure.UserEmailReplyRepository;
 import org.topicsswe.userservice.infrastructure.UserEmailRepository;
 
@@ -13,10 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 public class UserEmailService {
 
-    public final UserEmailRepository repository;
-    public final UserEmailReplyRepository replyRepository;
-
-
+    private final UserEmailRepository repository;
+    private final UserEmailReplyRepository replyRepository;
+    private final SendEmailConsumer emailConsumer;
 
     public void sendMessageToAdmin(UserEmail email) {
         repository.save(email);
@@ -28,13 +29,10 @@ public class UserEmailService {
 
     public void replyTo(long emailId, String fromAdminUsername, String message) {
 
-        //    TODO call notification service API to send email?
-
         // Find email in UserEmailRepository
         var optionalEmail = repository.findById(emailId);
         if (optionalEmail.isEmpty())
             throw new NoEmailFoundException(emailId);
-
 
         // Update UserEmailRepository
         var email = optionalEmail.get();
@@ -46,7 +44,9 @@ public class UserEmailService {
         email.setReplied(true);
 
         // Add to UserEmailReplyRepository
-        var reply = new UserEmailReply(email.getFromUsername(), fromAdminUsername, message, email);
+        var reply = new UserEmailReply(email.getFrom(), fromAdminUsername, message, email);
         replyRepository.save(reply);
+
+        emailConsumer.sendEmail(email.getFrom(), message);
     }
 }

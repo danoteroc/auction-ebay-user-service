@@ -1,10 +1,9 @@
-package org.topicsswe.userservice.domain.service;
+package org.topicsswe.userservice.domain.objects;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.topicsswe.userservice.domain.objects.UserEmail;
 
 import java.time.Instant;
 import java.util.Date;
