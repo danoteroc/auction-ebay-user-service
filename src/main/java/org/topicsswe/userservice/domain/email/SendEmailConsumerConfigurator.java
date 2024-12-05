@@ -19,7 +19,7 @@ public class SendEmailConsumerConfigurator {
     @Profile("{local | dev}")
     @Bean
     public SendEmailConsumer sendMockEmailConsumer() {
-        return (destinationEmail, message) -> {
+        return (destinationEmail, subject, message) -> {
 
         };
     }
