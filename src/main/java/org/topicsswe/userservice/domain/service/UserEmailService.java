@@ -47,6 +47,9 @@ public class UserEmailService {
         var reply = new UserEmailReply(email.getFrom(), fromAdminUsername, message, email);
         replyRepository.save(reply);
 
-        emailConsumer.sendEmail(email.getFrom(), message);
+        emailConsumer.sendEmail(
+                email.getFrom(),
+                "Reply to message from admin " + fromAdminUsername,
+                message);
     }
 }

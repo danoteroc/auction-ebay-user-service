@@ -5,5 +5,5 @@ import org.springframework.context.annotation.Profile;
 
 public interface SendEmailConsumer {
 
-    public void sendEmail(String destinationEmail, String message);
+    public void sendEmail(String destinationEmail, String subject, String message);
 }

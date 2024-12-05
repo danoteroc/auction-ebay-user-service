@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Configuration
 public class SendEmailConsumerConfigurator {
 
@@ -25,9 +27,13 @@ public class SendEmailConsumerConfigurator {
     @Profile("{docker}")
     @Bean
     public SendEmailConsumer sendDockerEmailConsumer() {
-        return (destinationEmail, message) -> restTemplate.postForEntity(
-                "api-gateway:42069/api/notifications/email", //TODO fill with correct URI
-                message,
+        return (destinationEmail, subject, message) -> restTemplate.postForEntity(
+                "api-gateway:42069/api/notifications/sendEmail", //TODO fill with correct URI
+                new SendEmail(
+                        List.of(destinationEmail),
+                        subject,
+                        message
+                ),
                 String.class
         );
     }
