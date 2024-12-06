@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class SendEmailConsumerConfigurator {
     @Bean
     public SendEmailConsumer sendMockEmailConsumer() {
         return (destinationEmail, subject, message) -> {
-
+            return HttpStatusCode.valueOf(200);
         };
     }
 
@@ -39,7 +40,7 @@ public class SendEmailConsumerConfigurator {
                         message
                 ),
                 String.class
-        );
+        ).getStatusCode();
     }
 
 }
